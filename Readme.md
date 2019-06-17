@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Удовенко Марина](https://up.htmlacademy.ru/javascript/17/user/7570).
-* Наставник: `Неизвестно`.
+* Наставник: `Кекс`.
 
 ---
 
