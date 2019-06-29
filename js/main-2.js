@@ -18,12 +18,13 @@ function randomInteger(min, max) {
 var creatArrayUsers = function () {
     var users = [];
 
-    for(var i = 1; i <= AUTHORS.length; i++) {
-          var user = {
-              avatar: 'img/avatar-' + (i + 1) + '.svg',
-              message: COMMENTS[Math.floor(Math.random() * COMMENTS.length)],
-              name: AUTHORS[i]
-          };
+    for (var i = 0; i < AUTHORS.length; i++) {
+        var user = {
+
+            avatar: 'img/avatar-' + (i + 1) + '.svg',
+            message: COMMENTS[Math.floor(Math.random() * COMMENTS.length)],
+            name: AUTHORS[i]
+        };
 
         users[i] = user;
     }
@@ -31,56 +32,52 @@ var creatArrayUsers = function () {
     return users;
 };
 
-// создание массива фото
-var creatArrayPhotos = function (count) {
+var creatPhotosArray = function (count) {
     var photos = [];
+
     for (var i = 0; i < count; i++) {
         var randAuthor = Math.floor(Math.random() * usersArray.length);
-        var block = {
+        console.log();
+        var photo = {
             url: 'photos/' + (i + 1) + '.jpg',
             likes: randomInteger(15, 200),
             comments: [
                 usersArray[randAuthor]
             ]
         };
-        console.log(block);
-        photos[i] = block;
+
+        //console.log(photo);
+
+        photos[i] = photo;
     }
+
     return photos;
 };
 
-var usersArray = creatArrayUsers();
-var photosArray = creatArrayPhotos(NUMBER_PHOTOS);
-
-//console.log(photosArray);
-
-
 var pictures = document.querySelector('.pictures');
-var pictureTemplate = document.querySelector('#picture').content
-    .querySelector('.picture');
+var pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-// отрисовка одного фото
+var usersArray = creatArrayUsers();
+var photosArray = creatPhotosArray(NUMBER_PHOTOS);
+
 var renderPhoto = function (photo) {
-    var picturedElement = pictureTemplate.cloneNode(true);
+    var pictureElement = pictureTemplate.cloneNode(true);
 
-    //console.log('photo.comments ' + photo.comments);
-    picturedElement.querySelector('.picture__img').src = photo.url;
-    picturedElement.querySelector('.picture__comments').textContent  = photo.comments.length;
-    picturedElement.querySelector('.picture__likes').textContent  = photo.likes;
+    pictureElement.querySelector('.picture__likes').textContent = photo.likes
+    pictureElement.querySelector('.picture__img').src = photo.url;
+    pictureElement.querySelector('.picture__comments').textContent = photo.comments.length;
 
-    return picturedElement;
+    return pictureElement;
 };
+console.log(photosArray.length);
 
-// отрисовка всех фото
-var renderPhotos = function (array) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < array.length; i++) {
-        fragment.appendChild(renderPhoto(array[i]));
-    }
+var fragment = document.createDocumentFragment();
+for(var i = 0; i < photosArray.length; i++) {
+    fragment.appendChild(renderPhoto(photosArray[i]));
 
-    pictures.appendChild(fragment);
-};
+}
+pictures.appendChild(fragment);
 
 
 
-renderPhotos(photosArray);
+
