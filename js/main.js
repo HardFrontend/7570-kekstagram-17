@@ -94,10 +94,12 @@ renderPhotos(photosArray);
 var popup = document.querySelector('.img-upload__overlay'); // pop up
 var uploadFileElement = document.querySelector('.img-upload__start'); // фото элемент
 var popupClose = popup.querySelector('.img-upload__cancel');
+var userCommentTextarea = popup.querySelector('.text__description');
 var ESC_KEYCODE = 27;
 
 var onPopupEscPress = function (evt) {
-    if (evt.keyCode === 27) {
+    var isFocusedTextarea = (document.activeElement === userCommentTextarea);
+    if (evt.keyCode === 27 && !isFocusedTextarea) {
         onButtonClose();
     }
 };
