@@ -43,7 +43,7 @@ var creatArrayPhotos = function (count) {
                 usersArray[randAuthor]
             ]
         };
-        console.log(block);
+        //console.log(block);
         photos[i] = block;
     }
     return photos;
@@ -84,3 +84,89 @@ var renderPhotos = function (array) {
 
 
 renderPhotos(photosArray);
+
+
+
+// upload image
+
+
+// загрузка фотографии
+var popup = document.querySelector('.img-upload__overlay'); // pop up
+var uploadFileElement = document.querySelector('.img-upload__start'); // фото элемент
+var popupClose = popup.querySelector('.img-upload__cancel');
+var ESC_KEYCODE = 27;
+
+var onPopupEscPress = function (evt) {
+    if (evt.keyCode === 27) {
+        onButtonClose();
+    }
+};
+
+var onImageChange = function () {
+    popup.classList.remove('hidden');
+    document.addEventListener('keydown', onPopupEscPress);
+};
+
+var onButtonClose = function () {
+    popup.classList.add('hidden');
+    document.removeEventListener('keydown', onPopupEscPress);
+};
+
+uploadFileElement.addEventListener('change', onImageChange);
+popupClose.addEventListener('click', onButtonClose);
+
+
+// отслеживаем нажатие ползунка и меняем насыщенность
+
+var imgPreviewContainer = popup.querySelector('.img-upload__preview');
+var imgPreview = imgPreviewContainer.querySelector('img');
+var fieldsetElement = popup.querySelector('.img-upload__effects');
+
+var levelEffect = popup.querySelector('.effect-level__pin');
+var levelEffectDepth = popup.querySelector('.effect-level__depth');
+var STEP = 25;
+var MIN_SCALE_VALUE = 25;
+var MAX_SCALE_VALUE = 100;
+
+// насыщенности фильтра
+var applyFilter = function (percentage) {
+    var checked = fieldsetElement.querySelector('input:checked');
+    var filter;
+    switch (checked.value) {
+        case 'chrome':
+            filter = 'grayscale(' + percentage / 100 + ')';
+            break;
+        case 'sepia':
+            filter = 'sepia(' + percentage / 100 + ')';
+            break;
+        case 'marvin':
+            filter = 'invert(' + percentage + '%)';
+            break;
+        case 'phobos':
+            filter = 'blur(' + 3 * percentage / 100 + 'px)';
+            break;
+        case 'heat':
+            filter = 'brightness(' + 3 * percentage / 100 + ')';
+            break;
+        default:
+            imgPreview.style.filter = 'none';
+    }
+    imgPreview.style.filter = filter;
+    levelEffect.style.left = percentage + '%';
+    levelEffectDepth.style.width = percentage + '%';
+};
+
+fieldsetElement.addEventListener('change', function () {
+    applyFilter(100);
+});
+
+levelEffect.addEventListener('mouseup', function (evt) {
+    evt.preventDefault();
+    applyFilter(50);
+});
+
+// нажатие ползунка и меняем насыщенность
+levelEffect.addEventListener('mouseup', function (evt) {
+    evt.preventDefault();
+    applyFilter(50);
+});
