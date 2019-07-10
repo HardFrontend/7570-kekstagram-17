@@ -30,6 +30,10 @@
   };
 
 
-  renderPhotos(window.photosArray);
+  var showLoadSuccess = function (array) {
+    renderPhotos(array);
+  };
+
+  window.load(showLoadSuccess, window.showErrorOfLoad);
 
 })();
