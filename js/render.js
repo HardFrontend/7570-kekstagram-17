@@ -8,7 +8,7 @@
     .querySelector('.picture');
 
   // отрисовка одного фото
-  var renderPhoto = function (photo) {
+  window.renderPhoto = function (photo) {
     var picturedElement = pictureTemplate.cloneNode(true);
 
     // console.log('photo.comments ' + photo.comments);
@@ -20,20 +20,25 @@
   };
 
   // отрисовка всех фото
-  var renderPhotos = function (array) {
+  window.renderPhotos = function (array) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < array.length; i++) {
-      fragment.appendChild(renderPhoto(array[i]));
+      fragment.appendChild(window.renderPhoto(array[i]));
     }
 
     pictures.appendChild(fragment);
   };
 
 
-  var showLoadSuccess = function (array) {
-    renderPhotos(array);
+  var picturesArrayCopy = [];
+
+  window.showLoadSuccess = function (array) {
+    picturesArrayCopy = array.slice();
+    //console.log(picturesArrayCopy);
+    var arrayFilter = window.popularFilter(picturesArrayCopy);
+    window.renderPhotos(arrayFilter);
   };
 
-  window.load(showLoadSuccess, window.showErrorOfLoad);
+  window.load(window.showLoadSuccess, window.showErrorOfLoad);
 
 })();
