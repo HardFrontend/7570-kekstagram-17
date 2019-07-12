@@ -7,11 +7,13 @@ var URL = 'https://js.dump.academy/kekstagram/data';
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
-    console.log(xhr.response + ' status');
+    // console.log(xhr.response + ' status');
 
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         onSuccess(xhr.response);
+        // console.log( xhr.response); // массив json
+
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }
@@ -32,17 +34,17 @@ var URL = 'https://js.dump.academy/kekstagram/data';
   };
 })();
 
-/*
-(function () {
+
+/*(function () {
   var onError = function (message) {
     console.error(message);
   };
 
   var onSuccess = function (data) {
-    console.log('onSuccess' + data);
+    console.log(data);
   };
 
-  window.load(URL, onSuccess, onError);
+  window.load(onSuccess, onError);
 })();*/
 
 
