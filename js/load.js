@@ -12,7 +12,7 @@ var URL = 'https://js.dump.academy/kekstagram/data';
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         onSuccess(xhr.response);
-        // console.log( xhr.response); // массив json
+         //console.log( xhr.response); // массив json
 
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
@@ -35,7 +35,7 @@ var URL = 'https://js.dump.academy/kekstagram/data';
 })();
 
 
-/*(function () {
+/* (function () {
   var onError = function (message) {
     console.error(message);
   };
