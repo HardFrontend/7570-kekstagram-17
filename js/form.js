@@ -29,6 +29,7 @@
 
   uploadFileElement.addEventListener('change', onImageChange);
   popupClose.addEventListener('click', onButtonClose);
+
   var imgPreviewContainer = popup.querySelector('.img-upload__preview');
   var imgPreview = imgPreviewContainer.querySelector('img');
   var fieldsetElement = popup.querySelector('.img-upload__effects');
