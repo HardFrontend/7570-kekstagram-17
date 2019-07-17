@@ -2,6 +2,7 @@
 var URL = 'https://js.dump.academy/kekstagram/data';
 
 (function () {
+  window.mainPhotoArrya = [];
 
   window.load = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -12,7 +13,9 @@ var URL = 'https://js.dump.academy/kekstagram/data';
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         onSuccess(xhr.response);
-         //console.log( xhr.response); // массив json
+          //window.mainPhotoArrya = xhr.response;
+         // return window.mainPhotoArrya;
+         //console.log(window.mainPhotoArrya); // массив json
 
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
