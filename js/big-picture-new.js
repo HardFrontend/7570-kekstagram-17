@@ -104,6 +104,14 @@
 
   var photoIndex = 0;
 
+  window.commentsArray = [];
+
+  var printLog = function () {
+    console.log(window.commentsArray);
+  };
+  printLog();
+
+
   window.openBigPicture = function () {
     bigPicture.classList.remove('hidden');
     var src = this.getAttribute('src');
@@ -116,20 +124,28 @@
     clearComments();
     console.log(window.picturesArrayCopy);
     window.renderBigPicture(picturesArrayCopy, photoIndex);
+
+    window.commentsArray = picturesArrayCopy[photoIndex].comments;
+
+    console.log(window.commentsArray);
+
     renderAllComments(picturesArrayCopy[photoIndex].comments.slice(commetFrom, commetTo));
-    console.log(picturesArrayCopy[photoIndex].comments.length);
+    console.log(picturesArrayCopy[photoIndex].comments.length  + 'length');
+    commetFrom = 0;
+    commetTo = commetFrom + 5;
 
     if (picturesArrayCopy[photoIndex].comments.length > 5) {
       bigPictureCommentsNow.textContent = 5;
 
-      userCommentLoader.addEventListener('click', onLoaderClick = function () {
-
+      userCommentLoader.addEventListener('click', onLoaderClick = function (evt) {
+        evt.preventDefault();
         commetFrom += 5;
         commetTo = commetFrom + 5;
+        console.log('click');
+        console.log('length after click ' + picturesArrayCopy[photoIndex].comments.length);
 
         if (commetFrom < picturesArrayCopy[photoIndex].comments.length) {
           bigPictureCommentsNow.textContent = commetTo;
-          console.log('photoIndex ' + photoIndex);
           console.log('commetFrom commetTo ' + commetFrom + ' ' + commetTo);
           renderAllComments(picturesArrayCopy[photoIndex].comments.slice(commetFrom, commetTo));
 
