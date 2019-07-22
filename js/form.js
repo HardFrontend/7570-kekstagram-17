@@ -5,6 +5,7 @@
 (function () {
   // загрузка фотографии
   var popup = document.querySelector('.img-upload__overlay'); // pop up
+  var form = document.querySelector('.img-upload__form');
   var uploadFileElement = document.querySelector('.img-upload__start'); // фото элемент
   var popupClose = popup.querySelector('.img-upload__cancel');
   var userCommentTextarea = popup.querySelector('.text__description');
@@ -117,4 +118,26 @@
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  var errorHandler = function () {
+    console.log('error');
+  };
+
+  var closePopUp = function () {
+    console.log('close');
+    popup.classList.add('hidden');
+  };
+
+  console.log(form);
+
+  form.addEventListener('submit', function (evt) {
+
+    // evt.preventDefault();
+    console.log('click');
+    popup.classList.add('hidden');
+    // window.upload(new FormData(popup), closePopUp, errorHandler);
+
+  });
+
+
 })();

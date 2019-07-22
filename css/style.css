@@ -999,6 +999,11 @@ main {
   border: none;
 }
 
+.comments-loader:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .social__text {
   margin: 0;
 }

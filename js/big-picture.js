@@ -8,16 +8,13 @@
   var bigPictureDescription = bigPicture.querySelector('.social__caption');
   var bigPictureLikes = bigPicture.querySelector('.likes-count');
   var bigPictureCommentsCount = bigPicture.querySelector('.comments-count');
+  var bigPictureCommentsLoader = bigPicture.querySelector('.comments-loader');
 
   var bigPictureSocialComments = bigPicture.querySelector('.social__comments');
-  var bigPictureSocialCommentAvatar = bigPictureSocialComments.querySelector('.social__picture');
-  var bigPictureSocialCommentText = bigPictureSocialComments.querySelector('.social__text');
   var userCommentTextarea = bigPictureSocialComments.querySelector('.social__footer-text');
   var bigPictureSocialCommentTemplate = document.querySelector('#social-comment-template').content
         .querySelector('.social__comment');
   var userCommentTextarea = bigPicture.querySelector('.social__footer-text');
-
-  // console.log(bigPictureImg);
 
 
   var clearComments = function () {
@@ -36,14 +33,49 @@
     return bigPictureElement;
   };
 
+
   var renderAllComments = function (array) {
-    clearComments();
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < array.length; i++) {
+/*
+    console.log(countClick + ' countClick in commenye');
+    from = 5 * countClick;
+     untilEl = 5 + from;
+
+    var toElemet = untilEl;
+    var fromElemet = from;
+
+    if(untilEl < array.length){
+      toElemet = untilEl;
+      document.querySelector('.social__comment-count-now').textContent = toElemet;
+
+    } else if (untilEl >= array.length) {
+       toElemet = array.length;
+      document.querySelector('.social__comment-count-now').textContent = array.length;
+      bigPictureCommentsLoader.disabled = true;
+    }
+
+    console.log(from + ' to - ' + toElemet + ' from untilEl');*/
+
+    for (var i = 0; i < array.length; i++) {               //i < array.length
       fragment.appendChild(renderSocialComment(array[i]));
     }
 
+
     bigPictureSocialComments.appendChild(fragment);
+  };
+
+
+  var countClick = 0;
+  var from = 0;
+  var until = 5;
+
+  var renderFiveCommentsClick = function (array) {
+    console.log((countClick += 1) + 'load click');
+    console.log(window.picturesArrayCopy);
+
+    //var arrayPics = array.slice(from, until);
+    // renderFiveComments(arrayPics);
+    //renderAllComments();
   };
 
 
@@ -52,14 +84,11 @@
     bigPictureLikes.textContent = photo[photoIndex].likes;
     bigPictureDescription.textContent = photo[photoIndex].description;
     bigPictureCommentsCount.textContent = photo[photoIndex].comments.length;
-
-    renderAllComments(photo[photoIndex].comments);
   };
 
   var onPopupEscPress = function (evt) {
     var isFocusedTextarea = (document.activeElement === userCommentTextarea);
     if (evt.keyCode === 27) {
-      console.log('esc');
       onButtonClose();
     }
   };
@@ -71,6 +100,8 @@
 
   var onButtonClose = function () {
     bigPicture.classList.add('hidden');
+    bigPictureCommentsLoader.disabled = false;
+    countClick = 0;
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
@@ -92,13 +123,27 @@
 
   window.openBigPicture = function () {
     bigPicture.classList.remove('hidden');
+    clearComments();
+    countClick = 0;
     var src = this.getAttribute('src');
     var photoIndex = arrayIndexPhotoCheck(window.picturesArrayCopy, src);
 
     console.log(photoIndex);
-    console.log(src);
-    //console.log(window.picturesArrayCopy);
-    window.renderBigPicture(picturesArrayCopy, photoIndex);
+    //console.log(src);
+    console.log(picturesArrayCopy[photoIndex].comments);
+    console.log(window.picturesArrayCopy);
+    window.renderBigPicture(window.picturesArrayCopy, photoIndex);
+    // renderFiveComments(picturesArrayCopy[photoIndex].comments);
+    renderAllComments(picturesArrayCopy[photoIndex].comments.slice(from, until));
+    bigPictureCommentsLoader.addEventListener('click', renderFiveCommentsClick = function (evt) {
+      evt.preventDefault();
+      countClick += 1;
+      from = 5 * countClick;
+      until = 5 + from;
+      console.log(from + ' to - ' + until + ' from untilEl')
+      console.log(countClick + ' countClick');
+      renderAllComments(picturesArrayCopy[photoIndex].comments.slice(from, until));
+    });
   };
 
 })();

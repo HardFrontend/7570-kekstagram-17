@@ -18,27 +18,27 @@
 
     for (var i = 0; i < popupHashtagArray.length; i++) {
       var hash = popupHashtagArray[i];
-      console.log(hash);
-      console.log(hash.length);
+      // console.log(hash);
+      // console.log(hash.length);
 
       if (hash.charAt(0) !== '#') {
-          errorMessage = 'Первый знак Хештега должен начинаться с #';
+        errorMessage = 'Первый знак Хештега должен начинаться с #';
       } else if (hash.length <= MIN_HASHTAG) {
-          errorMessage = 'Длина тега минимум 2 знака';
+        errorMessage = 'Длина тега минимум 2 знака';
       } else if (hash.length >= MAX_HASHTAG) {
-          errorMessage = 'Длина тега максимум 20 знаков';
+        errorMessage = 'Длина тега максимум 20 знаков';
       }
 
       if (hash.length > 1 && hash.charAt(0) === '#') {
-        console.log('hash.length ' + hash.match(/#/g));
+        // console.log('hash.length ' + hash.match(/#/g));
         var result = hash.match(/#/g).length;
         if (result > 1) {
-            errorMessage = 'Хэш-теги должны быть разделены пробелами';
+          errorMessage = 'Хэш-теги должны быть разделены пробелами';
         }
       }
 
       if (popupHashtagArray.length >= MAX_HASHTAG) {
-          errorMessage = 'Тегов может быть максимум 20';
+        errorMessage = 'Тегов может быть максимум 20';
       }
 
       if (errorMessage) {
