@@ -3,6 +3,9 @@
 (function () {
   var popup = document.querySelector('.img-upload__overlay'); // pop up
   var popupHashtags = popup.querySelector('.text__hashtags');
+  var form = document.querySelector('.img-upload__form');
+  var formSubmit = document.querySelector('.img-upload__submit');
+  var formTextarea = document.querySelector('.text__description');
   var MIN_HASHTAG = 2;
   var MAX_HASHTAG = 20;
 
@@ -18,8 +21,6 @@
 
     for (var i = 0; i < popupHashtagArray.length; i++) {
       var hash = popupHashtagArray[i];
-      // console.log(hash);
-      // console.log(hash.length);
 
       if (hash.charAt(0) !== '#') {
         errorMessage = 'Первый знак Хештега должен начинаться с #';
@@ -44,12 +45,35 @@
       if (errorMessage) {
         popupHashtags.setCustomValidity(errorMessage);
         popupHashtags.style.border = '2px solid red';
+        formSubmit.disabled = true;
       } else {
         popupHashtags.setCustomValidity(' ');
         popupHashtags.style.border = 'none';
+        formSubmit.disabled = false;
+        var value = formTextarea.value;
+
+        if (value !== null && value !== '') {
+
+          //formTextarea.style.border = 'none';
+        }
       }
     }
   };
 
   popupHashtags.addEventListener('change', checkHashtags);
+
+
+/*  var checkformTextarea = function () {
+    console.log('textare');
+    var value = formTextarea.value;
+    if (value && value !== '') {
+      formSubmit.disabled = false;
+      formTextarea.style.border = 'none';
+    } else {
+      formSubmit.disabled = true;
+      formTextarea.style.border = '2px solid red';
+      formTextarea.setCustomValidity('Заполните комментарий');
+    }
+  };
+  formTextarea.addEventListener('change', checkformTextarea);*/
 })();

@@ -53,6 +53,7 @@ var URL = 'https://js.dump.academy/kekstagram/data';
 
 (function () { // отправка формы
   var URL_SEND = 'https://js.dump.academy/kekstagram';
+               //var URL_SEND = 'https://js.dump.academy/code-and-magick';
 
   window.upload = function (data, onSuccess, onError) {
     var xhr = new XMLHttpRequest();

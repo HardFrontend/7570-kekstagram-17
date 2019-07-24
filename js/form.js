@@ -13,7 +13,7 @@
 
   var onPopupEscPress = function (evt) {
     var isFocusedTextarea = (document.activeElement === userCommentTextarea);
-    if (evt.keyCode === 27 && !isFocusedTextarea) {
+    if (evt.keyCode === ESC_KEYCODE && !isFocusedTextarea) {
       onButtonClose();
     }
   };
@@ -37,12 +37,7 @@
 
   var levelEffect = popup.querySelector('.effect-level__pin');
   var levelEffectDepth = popup.querySelector('.effect-level__depth');
-  var levelEffectBox = popup.querySelector('.img-upload__effect-level');
   var levelEffectLine = popup.querySelector('.effect-level__line');
-
-  var STEP = 25;
-  var MIN_SCALE_VALUE = 25;
-  var MAX_SCALE_VALUE = 100;
 
   var applyFilter = function (percentage) {
     var checked = fieldsetElement.querySelector('input:checked');
@@ -119,25 +114,70 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  var errorHandler = function () {
-    console.log('error');
+
+  var main = document.querySelector('main');
+  var successShowMessege = document.querySelector('#success').content
+    .querySelector('.success');
+  var successFormButton = successShowMessege.querySelector('.success__button');
+  var successFormInner = successShowMessege.querySelector('.success__inner');
+  var successFormLabel = document.querySelector('.img-upload__label');
+
+  var successShowMessegeError = document.querySelector('#error').content
+    .querySelector('.error');
+  var successShowMessegeErrorBtn = successShowMessegeError.querySelectorAll('.error__button');
+
+
+  var onPopupFormSendEscPress = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      onFormClose();
+    }
   };
 
-  var closePopUp = function () {
-    console.log('close');
+  var onPlaceClick = function (evt) {
+    if (evt.target !== successFormInner) {
+      onFormClose();
+    }
+  };
+
+  var onFormClose = function () {
+    successShowMessege.classList.add('hidden');
+    document.removeEventListener('keydown', onPopupFormSendEscPress);
+    document.removeEventListener('click', onPlaceClick);
+    successFormButton.removeEventListener('click', onFormClose);
+  };
+
+  window.formSend = function () {
     popup.classList.add('hidden');
+    successFormLabel.style.backgroundImage = 'inherit';
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(successShowMessege);
+    main.appendChild(fragment);
+
+    document.addEventListener('keydown', onPopupFormSendEscPress);
+    document.addEventListener('click', onPlaceClick);
+    successFormButton.addEventListener('click', onFormClose);
   };
 
-  console.log(form);
+  var onMessegeErrorBtn = function () {
+    successShowMessegeError.classList.add('hidden');
+  };
+
+  window.errorHandler = function () {
+    var fragment = document.createDocumentFragment();
+    fragment.appendChild(successShowMessegeError);
+    main.appendChild(fragment);
+
+    for (var i = 0; i < successShowMessegeErrorBtn.length; i++) {
+      successShowMessegeErrorBtn[i].addEventListener('click', onMessegeErrorBtn);
+    }
+  };
+
 
   form.addEventListener('submit', function (evt) {
-
-    // evt.preventDefault();
+    evt.preventDefault();
     console.log('click');
     popup.classList.add('hidden');
-    // window.upload(new FormData(popup), closePopUp, errorHandler);
-
+    window.upload(new FormData(form), window.formSend, window.errorHandler);
   });
-
 
 })();

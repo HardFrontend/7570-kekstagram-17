@@ -18,6 +18,7 @@
     .querySelector('.social__comment');
   var userCommentTextarea = bigPicture.querySelector('.social__footer-text');
   var userCommentLoader = bigPicture.querySelector('.comments-loader');
+  var COMMENTS_COUNT = 5;
 
   // console.log(bigPictureImg);
 
@@ -38,7 +39,7 @@
     bigPicture.classList.add('hidden');
     document.removeEventListener('keydown', onPopupEscPress);
     commetFrom = 0;
-    commetTo = commetFrom + 5;
+    commetTo = commetFrom + COMMENTS_COUNT;
     photoIndex = 0;
   };
 
@@ -78,87 +79,62 @@
     bigPictureLikes.textContent = photo[photoIndex].likes;
     bigPictureDescription.textContent = photo[photoIndex].description;
     bigPictureCommentsCount.textContent = photo[photoIndex].comments.length;
+
+    if (photo[photoIndex].comments.length > COMMENTS_COUNT) {
+      bigPictureCommentsNow.textContent = COMMENTS_COUNT;
+      userCommentLoader.disabled = false;
+      userCommentLoader.addEventListener('click', showMoreComments);
+
+    } else {
+      bigPictureCommentsNow.textContent = photo[photoIndex].comments.length;
+      userCommentLoader.disabled = true;
+    }
   };
+
+  var showMoreComments = function (evt) {
+    evt.preventDefault();
+    var src = bigPictureImg.getAttribute('src');
+    photoIndex = arrayIndexPhotoCheck(window.picturesArrayCopy, src);
+    var commenntsLength = window.picturesArrayCopy[photoIndex].comments.length;
+
+    if (commenntsLength > COMMENTS_COUNT) {
+      commetFrom += COMMENTS_COUNT;
+      commetTo = commetFrom + COMMENTS_COUNT;
+      bigPictureCommentsNow.textContent = commetTo;
+      renderAllComments(window.picturesArrayCopy[photoIndex].comments.slice(commetFrom, commetTo));
+
+      if (commetFrom >= commenntsLength || commetTo >= commenntsLength) {
+        bigPictureCommentsNow.textContent = commenntsLength;
+        userCommentLoader.disabled = true;
+      }
+    }
+  };
+
 
   window.showLoadSuccessBig = function (array) {
     window.renderBigPicture(array);
   };
 
   var arrayIndexPhotoCheck = function (array, el) {
-    console.log(array.length);
     for (var i = 0; i < 26; i++) {
       if (el === array[i].url) {
         return i;
       }
     }
-
-    // var index = array.indexOf(url);
-    // console.log(index + ' index')
-  };
-
-  var onLoaderClick = function () {
-    console.log('loader click2');
-
-    // commetTo = 5;
   };
 
   var photoIndex = 0;
-
-  window.commentsArray = [];
-
-  var printLog = function () {
-    console.log(window.commentsArray);
-  };
-  printLog();
 
 
   window.openBigPicture = function () {
     bigPicture.classList.remove('hidden');
     var src = this.getAttribute('src');
     photoIndex = arrayIndexPhotoCheck(window.picturesArrayCopy, src);
+    var commentsArray = window.picturesArrayCopy[photoIndex].comments;
 
-    // var photoIndex2 = window.picturesArrayCopy.indexOf(src);
-    // console.log(photoIndex2 + ' photoIndex2');
-
-    console.log(src + ' src ' + ' photoIndex ' + photoIndex);
     clearComments();
-    console.log(window.picturesArrayCopy);
-    window.renderBigPicture(picturesArrayCopy, photoIndex);
-
-    window.commentsArray = picturesArrayCopy[photoIndex].comments;
-
-    console.log(window.commentsArray);
-
-    renderAllComments(picturesArrayCopy[photoIndex].comments.slice(commetFrom, commetTo));
-    console.log(picturesArrayCopy[photoIndex].comments.length  + 'length');
-    commetFrom = 0;
-    commetTo = commetFrom + 5;
-
-    if (picturesArrayCopy[photoIndex].comments.length > 5) {
-      bigPictureCommentsNow.textContent = 5;
-
-      userCommentLoader.addEventListener('click', onLoaderClick = function (evt) {
-        evt.preventDefault();
-        commetFrom += 5;
-        commetTo = commetFrom + 5;
-        console.log('click');
-        console.log('length after click ' + picturesArrayCopy[photoIndex].comments.length);
-
-        if (commetFrom < picturesArrayCopy[photoIndex].comments.length) {
-          bigPictureCommentsNow.textContent = commetTo;
-          console.log('commetFrom commetTo ' + commetFrom + ' ' + commetTo);
-          renderAllComments(picturesArrayCopy[photoIndex].comments.slice(commetFrom, commetTo));
-
-          if (commetFrom >= picturesArrayCopy[photoIndex].comments.length || commetTo >= picturesArrayCopy[photoIndex].comments.length) {
-            bigPictureCommentsNow.textContent = picturesArrayCopy[photoIndex].comments.length;
-            //userCommentLoader.disabled = true;
-          }
-        }
-      });
-    } else {
-      bigPictureCommentsNow.textContent = picturesArrayCopy[photoIndex].comments.length;
-      //userCommentLoader.disabled = true;
-    }
+    window.renderBigPicture(window.picturesArrayCopy, photoIndex);
+    renderAllComments(commentsArray.slice(commetFrom, commetTo));
   };
 
 })();

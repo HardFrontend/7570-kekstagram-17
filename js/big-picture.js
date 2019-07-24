@@ -147,3 +147,31 @@
   };
 
 })();
+
+ // work
+if (picturesArrayCopy[photoIndex].comments.length > 5) {
+  bigPictureCommentsNow.textContent = 5;
+
+  userCommentLoader.addEventListener('click', onLoaderClick = function (evt) {
+    evt.preventDefault();
+    commetFrom += 5;
+    commetTo = commetFrom + 5;
+    console.log('click');
+    console.log('length after click ' + picturesArrayCopy[photoIndex].comments.length);
+
+
+    if (commetFrom < picturesArrayCopy[photoIndex].comments.length) {
+      bigPictureCommentsNow.textContent = commetTo;
+      console.log('commetFrom commetTo ' + commetFrom + ' ' + commetTo);
+      renderAllComments(picturesArrayCopy[photoIndex].comments.slice(commetFrom, commetTo));
+
+      if (commetFrom >= picturesArrayCopy[photoIndex].comments.length || commetTo >= picturesArrayCopy[photoIndex].comments.length) {
+        bigPictureCommentsNow.textContent = picturesArrayCopy[photoIndex].comments.length;
+        // userCommentLoader.disabled = true;
+      }
+    }
+  });
+
+} else {
+  bigPictureCommentsNow.textContent = picturesArrayCopy[photoIndex].comments.length;
+}
