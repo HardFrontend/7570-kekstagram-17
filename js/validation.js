@@ -1,79 +1,47 @@
 'use strict';
 
 (function () {
-  var popup = document.querySelector('.img-upload__overlay'); // pop up
-  var popupHashtags = popup.querySelector('.text__hashtags');
-  var form = document.querySelector('.img-upload__form');
-  var formSubmit = document.querySelector('.img-upload__submit');
-  var formTextarea = document.querySelector('.text__description');
-  var MIN_HASHTAG = 2;
-  var MAX_HASHTAG = 20;
+  var formHashtagInput = document.querySelector('.text__hashtags');
 
-  var checkHashtags = function () {
-    var popupHashtagsValue = popupHashtags.value.replace(/\s+/g, ' ').trim().toLowerCase();
-    var popupHashtagArray = popupHashtagsValue.split(' ');
-    var errorMessage;
-    var repeatedHashtags = popupHashtagArray.filter(function (element, indexElement, array) {
-      return indexElement !== array.indexOf(element) || indexElement !== array.lastIndexOf(element);
-    });
+  var validate = function (hashtag, hashtags) {
+    var checkRepeatingHashtag = function () {
+      var numberOfRepeating = hashtags.slice().filter(function (hashtagItem) {
+        return hashtagItem.toLowerCase() === hashtag.toLowerCase();
+      }).length;
+      return numberOfRepeating > 1;
+    };
 
-    console.log(popupHashtagArray);
-
-    for (var i = 0; i < popupHashtagArray.length; i++) {
-      var hash = popupHashtagArray[i];
-
-      if (hash.charAt(0) !== '#') {
-        errorMessage = 'Первый знак Хештега должен начинаться с #';
-      } else if (hash.length <= MIN_HASHTAG) {
-        errorMessage = 'Длина тега минимум 2 знака';
-      } else if (hash.length >= MAX_HASHTAG) {
-        errorMessage = 'Длина тега максимум 20 знаков';
-      }
-
-      if (hash.length > 1 && hash.charAt(0) === '#') {
-        // console.log('hash.length ' + hash.match(/#/g));
-        var result = hash.match(/#/g).length;
-        if (result > 1) {
-          errorMessage = 'Хэш-теги должны быть разделены пробелами';
-        }
-      }
-
-      if (popupHashtagArray.length >= MAX_HASHTAG) {
-        errorMessage = 'Тегов может быть максимум 20';
-      }
-
-      if (errorMessage) {
-        popupHashtags.setCustomValidity(errorMessage);
-        popupHashtags.style.border = '2px solid red';
-        formSubmit.disabled = true;
-      } else {
-        popupHashtags.setCustomValidity(' ');
-        popupHashtags.style.border = 'none';
-        formSubmit.disabled = false;
-        var value = formTextarea.value;
-
-        if (value !== null && value !== '') {
-
-          //formTextarea.style.border = 'none';
-        }
-      }
-    }
-  };
-
-  popupHashtags.addEventListener('change', checkHashtags);
-
-
-/*  var checkformTextarea = function () {
-    console.log('textare');
-    var value = formTextarea.value;
-    if (value && value !== '') {
-      formSubmit.disabled = false;
-      formTextarea.style.border = 'none';
+    if (hashtag.indexOf('#') !== 0) {
+      formHashtagInput.setCustomValidity('хэш-тег должен начинаться с символа # (решётка)');
+      return false;
+    } else if (hashtag.length === 1) {
+      formHashtagInput.setCustomValidity('хеш-тег не может состоять только из одной решётки');
+      return false;
+    } else if (hashtag.lastIndexOf('#') !== 0) {
+      formHashtagInput.setCustomValidity('хэш-теги должны разделяться пробелами');
+      return false;
+    } else if (checkRepeatingHashtag()) {
+      formHashtagInput.setCustomValidity('хэш-теги не должны повторяться');
+      return false;
+    } else if (hashtags.length > 5) {
+      formHashtagInput.setCustomValidity('хэш-тегов не может быть более пяти');
+      return false;
+    } else if (hashtag.length > 20) {
+      formHashtagInput.setCustomValidity('максимальная длина одного хэш-тега 20 символов, включая решётку');
+      return false;
     } else {
-      formSubmit.disabled = true;
-      formTextarea.style.border = '2px solid red';
-      formTextarea.setCustomValidity('Заполните комментарий');
+      formHashtagInput.setCustomValidity('');
+      return true;
     }
   };
-  formTextarea.addEventListener('change', checkformTextarea);*/
+
+  formHashtagInput.addEventListener('input', function (evt) {
+    var hashtags = evt.target.value.split(' ');
+
+    for (var i = 0; i < hashtags.length; i++) {
+      if (!validate(hashtags[i], hashtags)) {
+        break;
+      }
+    }
+  });
 })();
