@@ -3,7 +3,7 @@
 // console.log(photosArray);
 
 (function () {
-    var filter = document.querySelector('.img-filters');
+  var filter = document.querySelector('.img-filters');
   var pictures = document.querySelector('.pictures');
   var pictureTemplate = document.querySelector('#picture').content
     .querySelector('.picture');
@@ -37,8 +37,7 @@
   window.updatePics = function (TypeFilter) {
 
 
-      var discussedEnterData = window.picturesArrayCopy.slice();
-      //console.log(window.picturesArrayCopy);
+    var discussedEnterData = window.picturesArrayCopy.slice();
     var Data = TypeFilter(discussedEnterData);
 
     window.renderPhotos(Data);
@@ -51,6 +50,7 @@
     filter.classList.remove('img-filters--inactive');
     // window.updatePics();
   };
+
   window.load(window.showLoadSuccess, window.showErrorOfLoad);
-    //console.log(window.picturesArrayCopy); // как так ?
+  // console.log(window.picturesArrayCopy); // как так ?
 })();

@@ -53,7 +53,6 @@ var URL = 'https://js.dump.academy/kekstagram/data';
 
 (function () { // отправка формы
   var URL_SEND = 'https://js.dump.academy/kekstagram';
-               //var URL_SEND = 'https://js.dump.academy/code-and-magick';
 
   window.upload = function (data, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
@@ -62,7 +61,6 @@ var URL = 'https://js.dump.academy/kekstagram/data';
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         onSuccess(xhr.response);
-        console.log('form send');
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
       }

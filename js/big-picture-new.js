@@ -11,16 +11,11 @@
   var bigPictureCommentsNow = bigPicture.querySelector('.social__comment-count-now');
 
   var bigPictureSocialComments = bigPicture.querySelector('.social__comments');
-  var bigPictureSocialCommentAvatar = bigPictureSocialComments.querySelector('.social__picture');
-  var bigPictureSocialCommentText = bigPictureSocialComments.querySelector('.social__text');
-  var userCommentTextarea = bigPictureSocialComments.querySelector('.social__footer-text');
   var bigPictureSocialCommentTemplate = document.querySelector('#social-comment-template').content
     .querySelector('.social__comment');
   var userCommentTextarea = bigPicture.querySelector('.social__footer-text');
   var userCommentLoader = bigPicture.querySelector('.comments-loader');
   var COMMENTS_COUNT = 5;
-
-  // console.log(bigPictureImg);
 
   var onPopupEscPress = function (evt) {
     var isFocusedTextarea = (document.activeElement === userCommentTextarea);
